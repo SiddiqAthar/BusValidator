@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginHorizontal="@dimen/_20sdp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbarAlwaysDrawVerticalTrack="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/headingTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/worksans_bold"
+                android:text="@string/sync_txt"
+                android:textAlignment="textStart"
+                android:textColor="@color/dark_purple"
+                android:textSize="@dimen/_14sdp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/ipComponent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_10sdp"
+                android:weightSum="1">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/emailET"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_weight="0.5"
+                    android:enabled="false"
+                    android:hint="@string/txt_organization"
+                    app:placeholderText="Name">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/etOrganization"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:background="@android:color/transparent"
+                        android:enabled="true"
+                        android:inputType="text"
+                        android:maxLength="20"
+                        android:paddingTop="@dimen/_10sdp"
+                        android:textColor="@color/dark_purple"
+                        android:textSize="@dimen/_12sdp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/passwordTI"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/emailET"
+                    android:layout_weight="0.5"
+                    android:enabled="false"
+                    android:hint="@string/validator_code"
+                    app:placeholderText="Code">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/validatorCodeEd"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:background="@android:color/transparent"
+                        android:inputType="text"
+                        android:maxLength="10"
+                        android:paddingTop="@dimen/_10sdp"
+                        android:textColor="@color/dark_purple"
+                        android:textSize="@dimen/_12sdp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/psamLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_10sdp">
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/emailET"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_weight="0.5"
+                    android:enabled="false"
+                    android:hint="@string/validator_sdksupport"
+                    app:placeholderText="@string/validator_sdksupport">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/validatorSDKSupportEd"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:background="@android:color/transparent"
+                        android:ems="10"
+                        android:inputType="text"
+                        android:paddingTop="@dimen/_10sdp"
+                        android:textColor="@color/dark_purple"
+                        android:textSize="@dimen/_12sdp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/emailET"
+                    android:layout_weight="0.5"
+                    android:hint="@string/txt_mobile_number"
+                    app:placeholderText="@string/txt_mobile_number">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/etMobileNo"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:background="@android:color/transparent"
+                        android:ems="10"
+                        android:inputType="number"
+                        android:paddingTop="@dimen/_10sdp"
+                        android:textColor="@color/dark_purple"
+                        android:textSize="@dimen/_12sdp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/devInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_10sdp">
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/emailET"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_weight="0.5"
+                    android:enabled="false"
+                    android:hint="@string/txt_mac_address"
+                    app:placeholderText="@string/txt_mac_address">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/etMacAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:background="@android:color/transparent"
+                        android:ems="10"
+                        android:inputType="text"
+                        android:paddingTop="@dimen/_10sdp"
+                        android:textColor="@color/dark_purple"
+                        android:textSize="@dimen/_12sdp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/emailET"
+                    android:layout_weight="0.5"
+                    android:hint="@string/txt_skype"
+                    app:placeholderText="@string/txt_skype">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/etSkype"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:background="@android:color/transparent"
+                        android:ems="10"
+                        android:inputType="text"
+                        android:paddingTop="@dimen/_10sdp"
+                        android:textColor="@color/dark_purple"
+                        android:textSize="@dimen/_12sdp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/qrLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_10sdp">
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/emailET"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_weight="0.5"
+                    android:enabled="false"
+                    android:hint="@string/txt_station"
+                    app:placeholderText="Name">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/etStation"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:background="@android:color/transparent"
+                        android:ems="10"
+                        android:inputType="text"
+                        android:paddingTop="@dimen/_10sdp"
+                        android:textColor="@color/dark_purple"
+                        android:textSize="@dimen/_12sdp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/emailET"
+                    android:layout_weight="0.5"
+                    android:hint="@string/txt_description"
+                    app:placeholderText="@string/txt_description">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/etDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:background="@android:color/transparent"
+                        android:ems="10"
+                        android:inputType="text"
+                        android:paddingTop="@dimen/_10sdp"
+                        android:textColor="@color/dark_purple"
+                        android:textSize="@dimen/_12sdp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/stationInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_10sdp">
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/emailET"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_weight="0.5"
+                    android:enabled="false"
+                    android:hint="@string/txt_station_code"
+                    app:placeholderText="@string/txt_station_code">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/etStationCode"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:background="@android:color/transparent"
+                        android:ems="10"
+                        android:inputType="text"
+                        android:paddingTop="@dimen/_10sdp"
+                        android:textColor="@color/dark_purple"
+                        android:textSize="@dimen/_12sdp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/emailET"
+                    android:layout_weight="0.5"
+                    android:hint="@string/validator_direction"
+                    app:placeholderText="@string/validator_direction">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/validatorDirectionEd"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:background="@android:color/transparent"
+                        android:ems="10"
+                        android:inputType="number"
+                        android:paddingTop="@dimen/_10sdp"
+                        android:textColor="@color/dark_purple"
+                        android:textSize="@dimen/_12sdp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/validityComponent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_20sdp">
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/emailET"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_weight="0.5"
+                    android:enabled="false"
+                    android:hint="@string/organization_telephone"
+                    app:placeholderText="@string/organization_telephone">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/orgTelephoneEd"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:background="@android:color/transparent"
+                        android:ems="10"
+                        android:inputType="text"
+                        android:paddingTop="@dimen/_10sdp"
+                        android:textColor="@color/dark_purple"
+                        android:textSize="@dimen/_12sdp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/emailET"
+                    android:layout_weight="0.5"
+                    android:hint="@string/organization_fax"
+                    app:placeholderText="@string/organization_fax">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/orgFaxEd"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:background="@android:color/transparent"
+                        android:ems="10"
+                        android:inputType="number"
+                        android:paddingTop="@dimen/_10sdp"
+                        android:textColor="@color/dark_purple"
+                        android:textSize="@dimen/_12sdp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/saleCompinent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_10sdp">
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/emailET"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_weight="0.5"
+                    android:hint="@string/organization_address"
+                    app:placeholderText="@string/organization_address">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/orgAddressEd"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:background="@android:color/transparent"
+                        android:ems="10"
+                        android:inputType="number"
+                        android:paddingTop="@dimen/_10sdp"
+                        android:textColor="@color/dark_purple"
+                        android:textSize="@dimen/_12sdp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/emailET"
+                    android:layout_weight="0.5"
+                    android:hint="@string/txt_max_topup"
+                    app:placeholderText="Code">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/etMaxTopUp"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:background="@android:color/transparent"
+                        android:ems="10"
+                        android:inputType="number"
+                        android:paddingTop="@dimen/_10sdp"
+                        android:textColor="@color/dark_purple"
+                        android:textSize="@dimen/_12sdp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/lastSycnTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_5sdp"
+                android:fontFamily="@font/worksans"
+                android:text="@string/sync_txt"
+                android:textAlignment="center"
+                android:textColor="@color/dark_purple"
+                android:textSize="@dimen/_10sdp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/farePolicyTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_5sdp"
+                android:fontFamily="@font/worksans"
+                android:text="@string/sync_txt"
+                android:textAlignment="center"
+                android:textColor="@color/dark_purple"
+                android:textSize="@dimen/_10sdp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/syncBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_20sdp"
+                android:background="@color/orange"
+                android:fontFamily="@font/worksans"
+                android:text="@string/sync"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

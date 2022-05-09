@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">BusValidator</string>
+    <string name="ok">Ok</string>
+    <string name="info">Please tap your card or scan QR-code</string>
+    <string name="urdu_info">کارڈ ٹیب یا کیو آر کوڈ اسکین کریں۔</string>
+    <string name="emailAddress">Email Address</string>
+    <string name="password">Password</string>
+    <string name="sync_txt">Enter details to sync your data</string>
+    <string name="txt_organization">Organization</string>
+    <string name="txt_pos_code">POS Code</string>
+    <string name="txt_psam_number">PSAM Number</string>
+    <string name="txt_mobile_number">Mobile Number</string>
+    <string name="txt_mac_address">MAC Address</string>
+    <string name="txt_skype">Skype</string>
+    <string name="txt_station">Station</string>
+    <string name="txt_description">Description</string>
+    <string name="txt_station_code">Station Code</string>
+    <string name="txt_qr_price">QR Price</string>
+    <string name="txt_qr_validity">QR Validity</string>
+    <string name="txt_max_sale_limit">Max Sale Limit</string>
+    <string name="txt_min_topup">Min Topup</string>
+    <string name="txt_max_topup">Max Topup</string>
+    <string name="sync">Sync</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="enter_paramters_into_respective_fields">Enter paramters into respective fields</string>
+    <string name="download_eta_hrs">downloadETAHr</string>
+    <string name="download_eta_sec">downloadETASec</string>
+    <string name="download_min">downloadETAmins</string>
+    <string name="download_speed_mb">DownloadSpeedInMb</string>
+    <string name="download_speed_kb">DownloadSpeedInKB</string>
+    <string name="download_speed_bytes">DownloadSpeedInBytes</string>
+    <string name="validator_code">Validator Code</string>
+    <string name="validator_direction">Validator Direction</string>
+    <string name="validator_sdksupport">Validator SDKSupport</string>
+    <string name="organization_telephone">Organization Telephone</string>
+    <string name="organization_fax">Organization Fax</string>
+    <string name="organization_address">Organization Address</string>
+    <string name="software_version">Software Version</string>
+    <string name="log_tpye">Log Type</string>
+    <string name="device_code">Device Code</string>
+    <string name="qr_card">QR/Card Number</string>
+    <string name="date_time">Date Time</string>
+    <string name="descriptions">Descriptions</string>
+    <string name="activity_log">Activity Log</string>
+</resources>
