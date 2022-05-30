@@ -68,17 +68,4 @@ fun makeStatusNotification(message: String, context: Context): NotificationManag
     return notificationManager
 }
 
-fun checkTimeLess(timeString: String): Boolean {
-    val dateFormat = SimpleDateFormat("MMM dd, yyyy hh:mm:ss a")
-    val date: Date = dateFormat.parse(timeString)
-    val current: Date = dateFormat.parse(dateFormat.format(Date()))
-    return current.before(date)
-
-
-}
-
-fun getCurrentDate(): String {
-    val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-    return sdf.format(Date())
-}
 

@@ -42,6 +42,8 @@ class Repository(private val dao: AFCDao) {
         dao.updateCardTransaction(cardTravelTransaction)
 
     suspend fun deleteTransaction(qrNo: String) = dao.deleteQRTransaction(qrNo)
+    suspend fun removeOldQRTransaction() = dao.removeOldQRTransaction()
+
 
     suspend fun deleteCardTransaction(id: Int) = dao.deleteCardTransaction(id)
 

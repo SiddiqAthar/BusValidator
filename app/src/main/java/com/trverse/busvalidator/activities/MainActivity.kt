@@ -55,7 +55,7 @@ class MainActivity<T> : BaseActivity(), CallbackGeneric<GenericResponseModel<Any
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
             //todo hideUI
-//            hideSystemUI(dateTime)
+             hideSystemUI(dateTime)
         }
     }
 
@@ -79,6 +79,7 @@ class MainActivity<T> : BaseActivity(), CallbackGeneric<GenericResponseModel<Any
             "QR Scanned"
         )
         qrViewModel = ViewModelProvider(this).get(QRViewModel::class.java)
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
             == PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
                 this,
@@ -87,7 +88,8 @@ class MainActivity<T> : BaseActivity(), CallbackGeneric<GenericResponseModel<Any
             == PackageManager.PERMISSION_GRANTED
         ) {
             getLocation()
-        } else {
+        }
+        else {
             getAllPermissions(
                 arrayOf(
                     Manifest.permission.ACCESS_FINE_LOCATION,
@@ -115,8 +117,24 @@ class MainActivity<T> : BaseActivity(), CallbackGeneric<GenericResponseModel<Any
         scanWorker?.setListenner(this)
         scanWorker?.start()
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            NetworkStatusHelper(this).observe(this) {
 
-        lifecycleScope.launch {
+                when (it) {
+                    NetworkStatus.Available -> {
+                        online.setBackgroundColor(ContextCompat.getColor(this, R.color.teal_200))
+                        online.setText("Online")
+                    }
+                    NetworkStatus.Unavailable -> {
+                        online.setBackgroundColor(ContextCompat.getColor(this, R.color.red))
+                        online.setText("Offline")
+                    }
+                }
+
+            }
+        }
+
+            lifecycleScope.launch {
             qrViewModel?.getTotalUnSyncTransactions()?.observe(
                 this@MainActivity,
                 androidx.lifecycle.Observer {
@@ -124,12 +142,11 @@ class MainActivity<T> : BaseActivity(), CallbackGeneric<GenericResponseModel<Any
                     notUpdatedTransTv?.text = it.toString()
                 })
         }
-
-
         syncData()
 
-
     }
+
+
 
 
     private fun syncData() {
@@ -142,128 +159,83 @@ class MainActivity<T> : BaseActivity(), CallbackGeneric<GenericResponseModel<Any
 
 
     private fun insertRecord(qrResp: DecryptedQR, qrJson: String) {
-        /*     val validatorDirection = SharePrefData(this).retrieveSyncObject()?.Validator_Direction
-             if (validatorDirection.equals("IN", true) ||
-                 validatorDirection.equals("OUT", true)
-             ) {
-                 lifecycleScope.launch {
-                     val qrRecords = qrViewModel?.getTransactions(qrResp.TID)
-                     if (qrRecords.isNullOrEmpty()) {
-                         val data = QRTravelTransaction(
-                             QRNumber = qrResp.TID,
-                             Lat = locationData?.latitude.toString(),
-                             Long = locationData?.longitude.toString(),
-                             LoggedInUser = "",
-                             LogType = if (validatorDirection.equals("IN", true)) "checkin"
-                             else "checkout",
-                             QRJson = qrJson,
-                             StationCode = qrResp.stationCode,
-                             Sync = false,
-                             TransactionDateTime = Utils.currentDateTime(),
-                             id = 0,
-                             TransactionType = if (validatorDirection.equals("IN", true)) "checkin"
-                             else "checkout",
-                             FareAmount = qrResp.fairAmount
-                         )
-                         qrViewModel?.insertQRRecord(data)
-                         if (!dialogQr!!.isShowing) {
+        val validatorDirection = SharePrefData(this).retrieveSyncObject()?.Validator_Direction
+        Handler().postDelayed({
+            if (dialogQr?.isShowing == true) {
+                dialogQr?.dismiss()
+            }
+        }, 2000L)
 
-                             dialogQr?.setTitle(
-                                 if (validatorDirection.equals("IN", true)) "Check-In \nSuccessfully"
-                                 else "Check-Out\nSuccessfully"
-                             )
-                             dialogQr?.setData(
-                                 if (validatorDirection.equals(
-                                         "IN",
-                                         true
-                                     )
-                                 ) "Welcome Please board the bus"
-                                 else "Please leave the bus"
-                             )
-                             dialogQr?.setSuccessTune()
-                             dialogQr?.setSuccessImage()
-                             dialogQr?.show()
-                         }
-                     } else {
-                         if (!dialogQr!!.isShowing) {
-
-                             dialogQr?.setTitle("QR Already used\n")
-                             dialogQr?.setData(
-                                 "Last used at \n ${qrRecords[0].TransactionDateTime}"
-                             )
-                             dialogQr?.playtune(R.raw.already_inused)
-                             dialogQr?.show()
-                         }
-                     }
-                 }
-             }
-
-             Handler().postDelayed({
-                 if (dialogQr?.isShowing == true) {
-                     dialogQr?.dismiss()
-                 }
-             }, 2000L)
-     */
-        lifecycleScope.launch {
-            val qrRecords = qrViewModel?.getTransactions(qrResp.TID)
-            if (qrRecords.isNullOrEmpty()) {
-                val data = QRTravelTransaction(
-                    QRNumber = qrResp.TID,
-                    Lat = locationData?.latitude.toString(),
-                    Long = locationData?.longitude.toString(),
-                    LoggedInUser = "",
-                    LogType = DataType.CHECKIN.name,
-                    QRJson = qrJson,
-                    StationCode = qrResp.stationCode,
-                    Sync = false,
-                    TransactionDateTime = getCurrentTime(),
-                    id = 0,
-                    TransactionType = DataType.CHECKIN.name,
-                    FareAmount = qrResp.fairAmount
-                )
-
-                lifecycleScope.launch {
-                    qrViewModel?.insertQRRecord(data)
-                    if (logsEnable) {
-                        qrViewModel?.saveActivityLog(
-                            ActivityLogs(
-                                0,
-                                AppAction.QR_CHECKIN.appAction.Code,
-                                qrResp.TID,
-                                SharePrefData(this@MainActivity)
-                                    .retrieveSyncObject()?.Validator_Code ?: "0",
-                                getCurrentTime(),
-                                AppAction.QR_CHECKIN.appAction.desc ?: "N/A"
-                            )
-                        )
-                    }
-                }
-                if (!dialogQr!!.isShowing) {
-
-                    dialogQr?.setTitle("Check-in\nSuccessfully")
-                    dialogQr?.setData(
-                        "Welcome Please board the bus"
-                    )
-                    dialogQr?.setSuccessTune()
-                    dialogQr?.setSuccessImage()
-                    dialogQr?.show()
-                }
-            } else {
-                val checkOut: QRTravelTransaction? =
-                    qrRecords.find { data -> data.TransactionType == DataType.CHECKOUT.name }
-                if (checkOut == null) {
+        if (validatorDirection.equals("IN", true) ||
+            validatorDirection.equals("OUT", true)
+        ) {
+            lifecycleScope.launch {
+                val qrRecords = qrViewModel?.getTransactions(qrResp.TID)
+                if (qrRecords.isNullOrEmpty()) {
                     val data = QRTravelTransaction(
                         QRNumber = qrResp.TID,
                         Lat = locationData?.latitude.toString(),
                         Long = locationData?.longitude.toString(),
                         LoggedInUser = "",
-                        LogType = DataType.CHECKOUT.name,
+                        LogType = if (validatorDirection.equals("IN", true)) "checkin"
+                        else "checkout",
                         QRJson = qrJson,
                         StationCode = qrResp.stationCode,
                         Sync = false,
                         TransactionDateTime = getCurrentTime(),
                         id = 0,
-                        TransactionType = DataType.CHECKOUT.name,
+                        TransactionType = if (validatorDirection.equals("IN", true)) "checkin"
+                        else "checkout",
+                        FareAmount = qrResp.fairAmount
+                    )
+                    qrViewModel?.insertQRRecord(data)
+                    if (!dialogQr!!.isShowing) {
+
+                        dialogQr?.setTitle(
+                            if (validatorDirection.equals("IN", true)) "Check-In \nSuccessfully"
+                            else "Check-Out\nSuccessfully"
+                        )
+                        dialogQr?.setData(
+                            if (validatorDirection.equals(
+                                    "IN",
+                                    true
+                                )
+                            ) "Welcome Please board the bus"
+                            else "Please leave the bus"
+                        )
+                        dialogQr?.setSuccessTune()
+                        dialogQr?.setSuccessImage()
+                        dialogQr?.show()
+                    }
+                } else {
+                    if (!dialogQr!!.isShowing) {
+
+                        dialogQr?.setTitle("QR Already used\n")
+                        dialogQr?.setData(
+                            "Last used at \n ${qrRecords[0].TransactionDateTime}"
+                        )
+                        dialogQr?.playtune(R.raw.already_inused)
+                        dialogQr?.show()
+                    }
+                }
+            }
+        } else {
+            //TODO this else is for direction "Both", so it will handle all the scenario, in/out auto
+            lifecycleScope.launch {
+                val qrRecords = qrViewModel?.getTransactions(qrResp.TID)
+                if (qrRecords.isNullOrEmpty()) {
+                    val data = QRTravelTransaction(
+                        QRNumber = qrResp.TID,
+                        Lat = locationData?.latitude.toString(),
+                        Long = locationData?.longitude.toString(),
+                        LoggedInUser = "",
+                        LogType = DataType.CHECKIN.name.lowercase(),
+                        QRJson = qrJson,
+                        StationCode = qrResp.stationCode,
+                        Sync = false,
+                        TransactionDateTime = getCurrentTime(),
+                        id = 0,
+                        TransactionType = DataType.CHECKIN.name.lowercase(),
                         FareAmount = qrResp.fairAmount
                     )
 
@@ -273,59 +245,105 @@ class MainActivity<T> : BaseActivity(), CallbackGeneric<GenericResponseModel<Any
                             qrViewModel?.saveActivityLog(
                                 ActivityLogs(
                                     0,
-                                    AppAction.QR_CHECKOUT.appAction.Code,
+                                    AppAction.QR_CHECKIN.appAction.Code,
                                     qrResp.TID,
                                     SharePrefData(this@MainActivity)
                                         .retrieveSyncObject()?.Validator_Code ?: "0",
                                     getCurrentTime(),
-                                    AppAction.QR_CHECKOUT.appAction.desc ?: "N/A"
+                                    AppAction.QR_CHECKIN.appAction.desc ?: "N/A"
                                 )
                             )
                         }
                     }
-
                     if (!dialogQr!!.isShowing) {
 
-                        dialogQr?.setTitle("Check-Out\nSuccessfully")
+                        dialogQr?.setTitle("Check-in\nSuccessfully")
                         dialogQr?.setData(
-                            "Please leave the bus"
+                            "Welcome Please board the bus"
                         )
-
                         dialogQr?.setSuccessTune()
                         dialogQr?.setSuccessImage()
                         dialogQr?.show()
                     }
-
-
                 } else {
-                    if (logsEnable) {
-                        lifecycleScope.launch {
-                            qrViewModel?.saveActivityLog(
-                                ActivityLogs(
-                                    0,
-                                    AppAction.QR_USED.appAction.Code,
-                                    qrResp.TID,
-                                    SharePrefData(this@MainActivity)
-                                        .retrieveSyncObject()?.Validator_Code ?: "0",
-                                    getCurrentTime(),
-                                    AppAction.QR_USED.appAction.desc ?: "N/A"
-                                )
-                            )
-                        }
-                    }
-                    if (!dialogQr!!.isShowing) {
-
-                        dialogQr?.setTitle("QR Already used\n")
-                        dialogQr?.setData(
-                            "Last used at \n ${checkOut.TransactionDateTime}"
+                    val checkOut: QRTravelTransaction? =
+                        qrRecords.find { data -> data.TransactionType == DataType.CHECKOUT.name }
+                    if (checkOut == null) {
+                        val data = QRTravelTransaction(
+                            QRNumber = qrResp.TID,
+                            Lat = locationData?.latitude.toString(),
+                            Long = locationData?.longitude.toString(),
+                            LoggedInUser = "",
+                            LogType = DataType.CHECKOUT.name.lowercase(),
+                            QRJson = qrJson,
+                            StationCode = qrResp.stationCode,
+                            Sync = false,
+                            TransactionDateTime = getCurrentTime(),
+                            id = 0,
+                            TransactionType = DataType.CHECKOUT.name.lowercase(),
+                            FareAmount = qrResp.fairAmount
                         )
-                        dialogQr?.playtune(R.raw.already_inused)
-                        dialogQr?.show()
+
+                        lifecycleScope.launch {
+                            qrViewModel?.insertQRRecord(data)
+                            if (logsEnable) {
+                                qrViewModel?.saveActivityLog(
+                                    ActivityLogs(
+                                        0,
+                                        AppAction.QR_CHECKOUT.appAction.Code,
+                                        qrResp.TID,
+                                        SharePrefData(this@MainActivity)
+                                            .retrieveSyncObject()?.Validator_Code ?: "0",
+                                        getCurrentTime(),
+                                        AppAction.QR_CHECKOUT.appAction.desc ?: "N/A"
+                                    )
+                                )
+                            }
+                        }
+
+                        if (!dialogQr!!.isShowing) {
+
+                            dialogQr?.setTitle("Check-Out\nSuccessfully")
+                            dialogQr?.setData(
+                                "Please leave the bus"
+                            )
+
+                            dialogQr?.setSuccessTune()
+                            dialogQr?.setSuccessImage()
+                            dialogQr?.show()
+                        }
+
+
+                    } else {
+                        if (logsEnable) {
+                            lifecycleScope.launch {
+                                qrViewModel?.saveActivityLog(
+                                    ActivityLogs(
+                                        0,
+                                        AppAction.QR_USED.appAction.Code,
+                                        qrResp.TID,
+                                        SharePrefData(this@MainActivity)
+                                            .retrieveSyncObject()?.Validator_Code ?: "0",
+                                        getCurrentTime(),
+                                        AppAction.QR_USED.appAction.desc ?: "N/A"
+                                    )
+                                )
+                            }
+                        }
+                        if (!dialogQr!!.isShowing) {
+
+                            dialogQr?.setTitle("QR Already used\n")
+                            dialogQr?.setData(
+                                "Last used at \n ${checkOut.TransactionDateTime}"
+                            )
+                            dialogQr?.playtune(R.raw.already_inused)
+                            dialogQr?.show()
+                        }
+
                     }
-
                 }
-            }
 
+            }
         }
     }
 
@@ -539,9 +557,11 @@ class MainActivity<T> : BaseActivity(), CallbackGeneric<GenericResponseModel<Any
 /*
                     val rsaAlgo = RSAEncryption(this@MainActivity)
                     rsaAlgo.loadPrivateKey()
-                    val decryptedQr = rsaAlgo.decrypt(ByteUtil.hexStringToString(result))
+                    val decryptedQrRSA = rsaAlgo.decrypt(ByteUtil.hexStringToString(result))
 */
-                    val decryptedQr = AESEncryption.getShared().decrypt(result) // decrypt by AES
+
+                    val decryptedQr = AESEncryption.getShared()
+                        .decrypt(ByteUtil.hexStringToString(result)) // decrypt by AES
                     Log.d(TAG, "decrypted: $decryptedQr")
 
                     if (decryptedQr.isNullOrEmpty()) {
@@ -575,14 +595,12 @@ class MainActivity<T> : BaseActivity(), CallbackGeneric<GenericResponseModel<Any
                             dialogQr?.show()
                             Log.d(TAG, "scanResult: Invalid QR Code")
                         }
-
                     } else {
                         Log.d(TAG, "scanResult: Decrypted Result")
                         val gson = Gson()
                         val qrResp = gson.fromJson(decryptedQr, DecryptedQR::class.java)
                         if (qrResp.stationCode.equals(SharePrefData(this@MainActivity).retrieveSyncObject()?.Station_StationCode)) {
-                            if (checkTimeLess(qrResp.endTime))
-                            {
+                            if (checkTimeLess(qrResp.endTime)) {
                                 Log.d(TAG, "scanResult: Decrypted Result insert to local db start")
                                 // verify QR from Server
                                 insertRecord(qrResp, decryptedQr)
@@ -591,10 +609,7 @@ class MainActivity<T> : BaseActivity(), CallbackGeneric<GenericResponseModel<Any
                                     "scanResult: Decrypted Result insertered to local db end"
                                 )
 //                            checkQrUsageFromServer(qrResp, decryptedQr)
-
-                            }
-                            else
-                            {
+                            } else {
 
                                 if (!dialogQr!!.isShowing) {
                                     Log.d(TAG, "scanResult: QR Expired")

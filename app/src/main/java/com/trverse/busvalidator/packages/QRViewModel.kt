@@ -25,6 +25,7 @@ class QRViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     suspend fun insertQRRecord(qr: QRTravelTransaction) {
+        repo.removeOldQRTransaction()
         repo.saveTransaction(qr)
     }
 

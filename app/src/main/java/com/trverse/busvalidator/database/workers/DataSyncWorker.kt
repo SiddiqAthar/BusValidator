@@ -77,7 +77,7 @@ class DataSyncWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(c
 
         }
 
-        else {
+        /*else {
             val currentDate = Calendar.getInstance()
             val dueDate = Calendar.getInstance()
             dueDate.set(Calendar.HOUR_OF_DAY, 22)
@@ -100,9 +100,8 @@ class DataSyncWorker(ctx: Context, params: WorkerParameters) : CoroutineWorker(c
 
             return Result.success()
 
-        }
-
-
+        }*/
+         return Result.success()
     }
 
 }

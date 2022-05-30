@@ -57,6 +57,9 @@ interface AFCDao {
     fun getUnSyncCount(): LiveData<List<QRTravelTransaction>>
 */
 
+    @Query("DELETE FROM QRTravelTransaction WHERE id IN (SELECT id FROM QRTravelTransaction WHERE Sync=1 ORDER BY id DESC LIMIT 1 OFFSET 1000)")
+    suspend fun removeOldQRTransaction()
+
     @Query("DELETE FROM qrtraveltransaction WHERE QRNumber = :qrNo")
     suspend fun deleteQRTransaction(qrNo: String)
 

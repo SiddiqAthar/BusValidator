@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.location.*
 import android.net.wifi.WifiManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -19,9 +20,6 @@ import android.widget.Toast
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.getSystemService
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import com.opencsv.CSVReader
 import com.trverse.busvalidator.App
@@ -34,7 +32,6 @@ import com.trverse.busvalidator.utilities.FileDataUtility
 import com.trverse.busvalidator.utilities.SharePrefData
 import org.xml.sax.Locator
 import java.io.FileReader
-import java.lang.RuntimeException
 import java.net.NetworkInterface
 import java.text.SimpleDateFormat
 import java.util.*
@@ -113,7 +110,8 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     fun getCurrentTime(): String {
-        return SimpleDateFormat("MMM , HH:mm:ss aa", Locale.getDefault()).format(Date())
+        val sdf = SimpleDateFormat("MM/dd/yyyy HH:mm:ss")
+        return sdf.format(Date())
     }
 
 
@@ -327,11 +325,13 @@ open class BaseActivity : AppCompatActivity() {
         }
     }
 
-    public fun hideSystemUI(view: View) {
-        // Enables regular immersive mode.
+      fun hideSystemUI(view: View) {
+
+
+    /*// Enables regular immersive mode.
         // For "lean back" mode, remove SYSTEM_UI_FLAG_IMMERSIVE.
         // Or for "sticky immersive," replace it with SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-        /*   val decorView = window.decorView
+        *//*   val decorView = window.decorView
            decorView.systemUiVisibility =
                (View.SYSTEM_UI_FLAG_IMMERSIVE // Set the content to appear under the system bars so that the
                        // content doesn't resize when the system bars hide and show.
@@ -339,14 +339,14 @@ open class BaseActivity : AppCompatActivity() {
                        or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                        or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN // Hide the nav bar and status bar
                        or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                       or View.SYSTEM_UI_FLAG_FULLSCREEN)*/
+                       or View.SYSTEM_UI_FLAG_FULLSCREEN)*//*
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
         WindowInsetsControllerCompat(window, view).let { controller ->
             controller.hide(WindowInsetsCompat.Type.systemBars())
             controller.systemBarsBehavior =
                 WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        }
+        }*/
 
 
     }

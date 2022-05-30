@@ -21,15 +21,15 @@ import kotlin.collections.ArrayList
 
 @RequiresApi(Build.VERSION_CODES.N)
 class GetDataFromCard(var baseActivity: BaseActivity) {
-    private val TAG: String="CardData"
+    private val TAG: String = "CardData"
     private var standardBus: CardLanStandardBus? = null
     val lastTime = 1000L
     var result: String? = null
     var picc_type = 'B'.toByte()
     var blkNo: Byte = 4
     var dialog: SuccessDialog? = null
-    init
-    {
+
+    init {
         standardBus = CardLanStandardBus()
         coroutineCard()
     }
@@ -37,7 +37,7 @@ class GetDataFromCard(var baseActivity: BaseActivity) {
     fun getCardData(): ArrayList<Any>? {
 
         try {
-             standardBus?.callInitDev()
+            standardBus?.callInitDev()
             val serialNo = standardBus?.cardResetBytes
             if (serialNo == null || serialNo.isEmpty()) {
                 // error in card initialization sleep for few sec
@@ -123,13 +123,13 @@ class GetDataFromCard(var baseActivity: BaseActivity) {
                                 saveLog(log)
                             }
 
-
-                            else {
+                            else
+                            {
                                 // check out change to check-in deduct money and save it back to the card
                                 val unpadded = "0"
                                 val checkInPad =
                                     "0000000000000000".substring(unpadded.length) + unpadded
-                                 blkNo = 8
+                                blkNo = 8
                                 val ret = standardBus?.callWriteOneSertorDataToCard(
                                     picc_type,
                                     blkNo,
