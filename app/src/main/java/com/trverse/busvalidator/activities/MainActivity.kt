@@ -3,7 +3,10 @@ package com.trverse.busvalidator.activities
 import android.Manifest
 import android.content.pm.PackageManager
 import android.icu.text.SimpleDateFormat
-import android.os.*
+import android.os.Build
+import android.os.Bundle
+import android.os.Handler
+import android.os.SystemClock
 import android.util.Log
 import android.view.KeyEvent
 import androidx.activity.result.contract.ActivityResultContracts
@@ -34,7 +37,10 @@ import com.trverse.busvalidator.models.farePolicyModels.FarePolicyResponseModel
 import com.trverse.busvalidator.models.qr.DecryptedQR
 import com.trverse.busvalidator.models.settings.SyncResponse
 import com.trverse.busvalidator.mycallbacks.CustomGenericCallback
-import com.trverse.busvalidator.network.*
+import com.trverse.busvalidator.network.APIManager
+import com.trverse.busvalidator.network.CallbackGeneric
+import com.trverse.busvalidator.network.NetworkStatus
+import com.trverse.busvalidator.network.NetworkStatusHelper
 import com.trverse.busvalidator.packages.QRViewModel
 import com.trverse.busvalidator.utilities.*
 import kotlinx.android.synthetic.main.activity_main.*
@@ -44,7 +50,7 @@ import java.util.*
 
 class MainActivity<T> : BaseActivity(), CallbackGeneric<GenericResponseModel<Any>>,
     ScanWork.ScanQRListenner {
-    private val TAG: String = "QRScan"
+    val TAG: String = "QRScan"
     var dialogQr: ErrorSuccessDialog? = null
     var qrViewModel: QRViewModel? = null
     var scanWorker: ScanWork? = null
@@ -55,7 +61,7 @@ class MainActivity<T> : BaseActivity(), CallbackGeneric<GenericResponseModel<Any
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
             //todo hideUI
-             hideSystemUI(dateTime)
+            hideSystemUI(dateTime)
         }
     }
 
@@ -88,8 +94,7 @@ class MainActivity<T> : BaseActivity(), CallbackGeneric<GenericResponseModel<Any
             == PackageManager.PERMISSION_GRANTED
         ) {
             getLocation()
-        }
-        else {
+        } else {
             getAllPermissions(
                 arrayOf(
                     Manifest.permission.ACCESS_FINE_LOCATION,
@@ -134,7 +139,7 @@ class MainActivity<T> : BaseActivity(), CallbackGeneric<GenericResponseModel<Any
             }
         }
 
-            lifecycleScope.launch {
+        lifecycleScope.launch {
             qrViewModel?.getTotalUnSyncTransactions()?.observe(
                 this@MainActivity,
                 androidx.lifecycle.Observer {
@@ -554,11 +559,9 @@ class MainActivity<T> : BaseActivity(), CallbackGeneric<GenericResponseModel<Any
             runOnUiThread {
                 try {
                     Log.d(TAG, "scanResult: Beginning of Decryption")
-/*
                     val rsaAlgo = RSAEncryption(this@MainActivity)
                     rsaAlgo.loadPrivateKey()
                     val decryptedQrRSA = rsaAlgo.decrypt(ByteUtil.hexStringToString(result))
-*/
 
                     val decryptedQr = AESEncryption.getShared()
                         .decrypt(ByteUtil.hexStringToString(result)) // decrypt by AES
